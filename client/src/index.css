@@ -1,17 +1,50 @@
 @import "tailwindcss";
+@import '@fontsource/poppins/400.css';
+@import '@fontsource/poppins/600.css';
+
+body {
+  font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
 
 /* AG Grid floating filter input override */
 .ag-floating-filter-input {
   font-size: 1rem;
   padding: 0.5rem;
   border-radius: 6px;
-  background-color: #fffbe6;
+  background-color: #333;
   color: #1a1a1a;
   border: 1px solid #ccc;
 }
 .ag-theme-alpine .ag-center-cols-container .ag-cell.withdrawal-number {
   color: #ff4444 !important;
   font-weight: 700;
+  
+}
+.ag-theme-alpine .ag-cell {
+  border-right: 1px solid #444;
+}
+
+@keyframes slowBounce {
+  0%, 100% {
+    transform: translateY(-10%);
+    animation-timing-function: ease-in-out;
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: ease-in-out;
+  }
+}
+
+.slow-bounce {
+  animation: slowBounce 3s infinite;
+}
+.quote-image {
+  max-width: 400px;       /* Limits how wide it can get */
+  width: 100%;            /* Makes it responsive */
+  height: auto;           /* Maintains aspect ratio */
+  display: block;         /* Removes inline spacing */
+  margin: 0 auto;         /* Centers the image horizontally */
 }
 
 

@@ -1,3 +1,4 @@
+import Client from "../Models/client.js";
 import Notification from "../Models/Notifications.js";
 import Transaction from "../Models/transactionModel.js";
 import User from "../Models/userModel.js";
@@ -133,14 +134,63 @@ export const deleteTransaction = async (req, res, next) => {
   try {
     const { id } = req.params;
 
+    // 💡 Authorization check
     if (!req.user || !['admin', 'agent'].includes(req.user.role)) {
       return res.status(403).json({ message: 'Not authorized to delete transactions' });
     }
 
+    // 🗃️ First fetch the transaction you’re about to delete
+    const deletedTx = await Transaction.findById(id);
+    if (!deletedTx) {
+      return res.status(404).json({ message: 'Transaction not found' });
+    }
+
+    // 🔁 Cascade update on Client
+    const clientId = deletedTx.clientId;
+    const txAmount = deletedTx.amount;
+    const txType = deletedTx.type;
+
+    if (txType === 'deposit') {
+      await Client.findByIdAndUpdate(clientId, {
+        $inc: { balance: -txAmount }
+      });
+    }
+
+    if (txType === 'withdrawal') {
+      await Client.findByIdAndUpdate(clientId, {
+        $inc: { balance: txAmount, totalWithdrawals: -txAmount }
+      });
+    }
+
+    // 🗑️ Now delete the transaction
     await Transaction.findByIdAndDelete(id);
-    res.status(200).json({ message: 'Transaction deleted successfully' });
+
+    res.status(200).json({ message: 'Transaction deleted and client updated successfully' });
+
   } catch (error) {
     console.error('❌ Delete transaction error:', error);
     next(error);
   }
 };
+
+
+export const updateTransaction = async (req, res, next)=>{
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    const updated = await Transaction.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+
+    res.status(200).json({ message: 'Transaction updated', transaction: updated });
+  } catch (err) {
+    console.error('🔴 updateTransaction error:', err);
+    res.status(500).json({ error: 'Server error while updating transaction' });
+  }
+}

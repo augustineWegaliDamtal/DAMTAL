@@ -1,6 +1,6 @@
 import express from 'express'
-import { deleteTransaction, deposit, getAllDeposits, getAllTransactions, getAllWithdrawals, withdrawFunds } from '../Controllers/allTransactions.js';
-import { verifyToken } from '../utils/verifyUser.js';
+import { deleteTransaction, deposit, getAllDeposits, getAllTransactions, getAllWithdrawals, updateTransaction, withdrawFunds } from '../Controllers/allTransactions.js';
+import { verifyAdmin, verifyToken } from '../utils/verifyUser.js';
 
 const router = express.Router();
 
@@ -16,6 +16,7 @@ router.post('/makeDeposit', verifyToken,deposit);             // Deposit control
 
 // 🧹 Transaction deletion (admin/agent only — implement checks inside)
 router.delete('/deleteTransactions/:id', verifyToken, deleteTransaction);
+router.post('/updateTransaction/:id', verifyAdmin, updateTransaction);
 
 
 export default router;

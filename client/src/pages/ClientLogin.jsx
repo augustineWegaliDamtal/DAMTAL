@@ -52,9 +52,9 @@ console.log("🧠 Response:", data);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-      <form
+      <form  style={{ backgroundImage: 'url(/bg3.png)' }}
         onSubmit={handleLogin}
-        className="bg-white p-6 rounded shadow-md w-full max-w-sm"
+        className=" bg-cover bg-no-repeat  max-h-screen flex flex-col bg-amber-300 p-6 rounded shadow-xl w-full max-w-sm"
       >
         <h2 className="text-xl font-semibold mb-4 text-center">Client Login</h2>
 

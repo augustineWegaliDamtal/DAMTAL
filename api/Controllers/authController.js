@@ -205,7 +205,7 @@ export const loginClient = async (req, res, next) => {
     if (!isMatch) return res.status(401).json({ message: 'Invalid PIN' });
 
     const token = jwt.sign(
-      { id: client._id, role: 'client' },
+      { _id: client._id, role: 'client', accountNumber: client.accountNumber },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );

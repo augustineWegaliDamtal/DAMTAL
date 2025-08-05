@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const WithdrawFundsForm = () => {
   const [formData, setFormData] = useState({
@@ -50,8 +51,8 @@ const WithdrawFundsForm = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow-md max-w-xl mx-auto">
-      <h2 className="text-lg font-bold mb-4 text-gray-800">💸 Withdraw Funds</h2>
+    <div className=" p-6 rounded shadow-md max-w-xl mx-auto pt-15 mt-15  bg-amber-300">
+      <h2 className="text-lg font-bold mb-4 text-slate-700">💸 Smart Withdraw</h2>
 
       {message && <p className="mb-4 text-sm text-gray-600">{message}</p>}
 
@@ -63,7 +64,7 @@ const WithdrawFundsForm = () => {
           onChange={(e) =>
             setFormData((f) => ({ ...f, accountNumber: e.target.value }))
           }
-          className="border p-2 rounded"
+          className="border p-2 rounded outline-0 bg-white border-gray-300 rounded-lg "
           required
         />
         <input
@@ -73,7 +74,7 @@ const WithdrawFundsForm = () => {
           onChange={(e) =>
             setFormData((f) => ({ ...f, amount: e.target.value }))
           }
-          className="border p-2 rounded"
+          className="border p-2 rounded outline-0 bg-white border-gray-300 rounded-lg"
           required
         />
         <button
@@ -83,6 +84,14 @@ const WithdrawFundsForm = () => {
         >
           {loading ? 'Processing...' : 'Submit Withdrawal'}
         </button>
+      <div className='mt-6 flex justify-between'>
+              <Link to='/allTransaction' className='text-blue-700 underline text-sm font-bold'>
+                View All Transactions
+              </Link>
+              <Link to='/admin' className='text-green-700 underline text-sm font-bold'>
+                Deposit Form
+              </Link>
+            </div>
       </form>
     </div>
   );

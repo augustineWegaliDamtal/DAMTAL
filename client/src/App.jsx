@@ -28,11 +28,12 @@ const App = () => {
               <Route path='/setPin' element={<SetPin/>}/>
               <Route path='/check' element={<ClientCheck/>}/>
                <Route path='/clientHome' element={<ClientHomePage/>}/>
+                <Route path='/about' element={<About/>}/>
         <Route element={<Private/>}>
     <Route path='/profile' element={<Profile/>}/>
         <Route path='/admin' element={<AdminHomePage/>}/>
         <Route path='/agent' element={<AgentsHomePage/>}/>
-        <Route path='/about' element={<About/>}/>
+       
         <Route path='/allTransaction' element={<AllTransactionsAGGrid/>}/>
         <Route path='/registerAgent' element={<RegisterAgents/>}/>
         <Route path='/registerClient' element={<RegisterClients/>}/>

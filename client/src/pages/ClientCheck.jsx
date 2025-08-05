@@ -40,8 +40,9 @@ const ClientStatusEntry = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-6 rounded shadow-md w-full max-w-sm">
+    <div  className="min-h-screen flex items-center justify-center bg-amber-300">
+        <div style={{ backgroundImage: 'url(/bg3.png)' }} className=" bg-cover bg-no-repeat  max-h-screen flex flex-col bg-amber-300 p-6 rounded shadow-xl w-full max-w-sm">
+
         <h2 className="text-lg font-bold mb-4 text-center">Welcome Client</h2>
 
         <input

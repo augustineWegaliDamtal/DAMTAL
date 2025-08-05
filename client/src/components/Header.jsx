@@ -19,8 +19,11 @@ const Header = () => {
   };
 
   return (
-    <div className="p-2.5 relative">
-      <ul className="flex justify-between items-center">
+
+      <div className="p-2.5 relative top-0">
+      <div className="fixed top-0 left-0 w-full z-50  text-black shadow-md bg-amber-300 ">
+      <ul className="flex justify-between items-center font-bold text-slate-800 p-2">
+     
         {currentUser?.role === 'admin' && (
           <Link to="/admin">
             <li>
@@ -28,7 +31,9 @@ const Header = () => {
             </li>
           </Link>
         )}
-
+ <Link to="/about">
+       <div className='flex items-center ml-9'><img className='w-10 h-10 slow-bounce' src='Co.png'/></div>
+       </Link>
         {currentUser?.role === 'agent' && (
           <Link to="/agent">
             <li>
@@ -37,15 +42,9 @@ const Header = () => {
           </Link>
         )}
 
-        {currentUser && (
-          <Link to="/about">
-            <li>About</li>
-          </Link>
-        )}
-
         {currentUser?.role === 'admin' && (
           <Link to="/registerAgent">
-            <li>Register Agent</li>
+            <li>Registeration</li>
           </Link>
         )}
 
@@ -80,7 +79,7 @@ const Header = () => {
           left: 5,
           width: 40,
           height: 30,
-          opacity: 0.03 ,
+          opacity: 0.0 ,
           zIndex: 100,
           
         }}
@@ -90,6 +89,7 @@ const Header = () => {
       {/* 🔐 Invisible tap area to reveal Signin */}
       
     </div>
+</div>
   );
 };
 

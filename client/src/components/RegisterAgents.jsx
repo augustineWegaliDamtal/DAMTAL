@@ -53,9 +53,11 @@ setSuccess(true);
     }
   }
   return (
-    <div className='bg-gray-100 h-screen'>
-      <h1 className='font-bold uppercase text-slate-700 text-center '> Registeration</h1>
-      <div className='flex flex-col mx-auto max-w-sm bg-gradient-to-r from-cyan-300 to-pink-200 p-2 '>
+     <div style={{ backgroundImage: 'url(/bg3.png)' }} className=" bg-cover bg-no-repeat bg-amber-300  min-h-screen  ">
+     
+        <div className='flex flex-col items-center pt-10 '>
+         <h1 className='font-bold uppercase text-gray-700 rounded-sm  p-2 text-center w-100 mt-2  text-xl'> REGISTRATION</h1>
+                <div className='mt-4 w-full max-w-sm bg-gradient-to-br from-yellow-400 to-yellow-200  p-4 rounded-lg shadow-2xl mx-auto'>
         <form onSubmit={handleFormSubmit} className='flex flex-col gap-4 p-2'>
         <input type="text" name="accountNumber" placeholder="Enter account number" onChange={handleFormChange}
          className='border bg-white rounded-lg p-2 border-gray-300 outline-0 '/>
@@ -80,11 +82,12 @@ setSuccess(true);
   </div>
 )}
 
-<button disabled={loading} className='font-semibold bg-blue-700 text-white hover:bg-gradient-to-t from-bg-yellow-100 to-cyan-400 p-2 '>{loading?'...loading':'Register'}</button>
+<button disabled={loading} className='font-semibold bg-black text-white hover:bg-gradient-to-t from-bg-yellow-100 to-cyan-400 p-2 '>{loading?'...loading':'Register'}</button>
 {success && <p className="text-green-500">User registered successfully!</p>}
 {error && <div className='text-red-500'>{error}</div>}
         </form>
       </div>
+        </div>
     </div>
   )
 }

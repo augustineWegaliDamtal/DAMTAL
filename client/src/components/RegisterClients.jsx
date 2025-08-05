@@ -64,10 +64,11 @@ const RegisterClients = () => {
   };
 
   return (
-    <div className='bg-gray-100 min-h-screen flex flex-col items-center pt-4'>
-      <h1 className='font-bold uppercase text-slate-700 text-center'>Client Registration</h1>
+    <div style={{ backgroundImage: 'url(/bg3.png)' }} className="bg-slate-100 bg-cover bg-no-repeat  max-h-screen flex flex-col">
+     <div className='min-h-screen flex flex-col items-center pt-15'>
+       <h1 className='font-bold uppercase text-gray-700 text-center p-2 rounded-sm text-xl  '>Client Registration</h1>
       
-      <div className='mt-4 w-full max-w-sm bg-gradient-to-r from-cyan-300 to-pink-200 p-4 rounded-lg shadow-md'>
+      <div className='mt-4 w-full max-w-sm bg-gradient-to-br from-yellow-400 to-yellow-200  p-4 rounded-lg shadow-2xl '>
         <form onSubmit={handleFormSubmit} className='flex flex-col gap-4'>
           <input
             type='text'
@@ -76,7 +77,7 @@ const RegisterClients = () => {
             name='name'
             value={formData.name}
             required
-            className='border rounded-lg p-2 bg-white border-gray-300 outline-none'
+            className='border rounded-lg p-2 bg-white border-gray-300 outline-none text-black'
           />
           <input
             type='text'
@@ -85,7 +86,7 @@ const RegisterClients = () => {
             name='phone'
             value={formData.phone}
             required
-            className='border rounded-lg p-2 bg-white border-gray-300 outline-none'
+            className='border rounded-lg p-2 bg-white border-gray-300 outline-none text-black' 
           />
           <input
             type='text'
@@ -94,7 +95,7 @@ const RegisterClients = () => {
             name='address'
             value={formData.address}
             required
-            className='border rounded-lg p-2 bg-white border-gray-300 outline-none'
+            className='border rounded-lg p-2 bg-white border-gray-300 outline-none text-black'
           />
           <input
             type='text'
@@ -102,12 +103,12 @@ const RegisterClients = () => {
             onChange={handleFormChange}
             name='gender'
             value={formData.gender}
-            className='border rounded-lg p-2 bg-white border-gray-300 outline-none'
+            className='border rounded-lg p-2 bg-white border-gray-300 outline-none text-black'
           />
 
           <button
             disabled={loading}
-            className='font-semibold bg-blue-700 text-white hover:bg-gradient-to-t from-yellow-100 to-cyan-400 p-2 rounded transition'
+            className='font-semibold bg-black text-white hover:bg-gradient-to-t from-yellow-100 to-cyan-400 p-2 rounded transition'
           >
             {loading ? '...loading' : 'Register'}
           </button>
@@ -124,7 +125,9 @@ const RegisterClients = () => {
           )}
         </form>
       </div>
-    </div>
+     </div>
+     </div>
+    
   );
 };
 

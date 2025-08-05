@@ -55,7 +55,7 @@ useEffect(() => {
  
     return (
       
-      <div style={{backgroundImage:'url(/Pica.png) ' }} className='bg-cover bg-center h-screen p-4'>
+      <div style={{backgroundImage:'url(/sig.png) ' }} className='bg-cover bg-center h-screen p-4 mt-8'>
       <h1 className='text-white text-center font-bold p-4 uppercase text-shadow-black'>SignIn</h1>
       <div className=' flex flex-col gap-6 mx-auto max-w-sm bg-grad border border-white p-2 rounded-lg'>
        <form onSubmit={handleFormSubmit} className='flex flex-col gap-6 '>

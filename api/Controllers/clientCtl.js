@@ -26,13 +26,14 @@ export const getClientDashboard = async (req, res, next) => {
     const totalWithdrawals = transactions
       .filter(tx => tx.type === 'withdrawal')
       .reduce((sum, tx) => sum + tx.amount, 0);
-
+const nestedBalance = totalDeposits - totalWithdrawals
     res.json({
-      name: client.name,
-      balance: client.balance || 0,
-      totalDeposits,
-      totalWithdrawals
-    });
+    name: client.name,
+    balance: client.balance || 0,
+    totalWithdrawals,
+    totalDeposits,        // optional if you still need it
+    nestedBalance,        // <-- newly added
+  });
   } catch (error) {
     console.error('❌ Dashboard fetch error:', error);
     next(error);

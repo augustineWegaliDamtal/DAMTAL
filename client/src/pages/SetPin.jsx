@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SetPinClient = () => {
   const [accountNumber, setAccountNumber] = useState("");
@@ -26,9 +26,7 @@ const SetPinClient = () => {
       if (statusRes.ok && statusData.pinSet) {
         console.log("✅ PIN confirmed, navigating...");
         setSuccess("PIN verified. Redirecting...");
-        setTimeout(() => {
-          navigate("/clientHome");
-        }, 1200); // Smooth UX delay
+       
       } else if (attempt < 3) {
         setTimeout(() => verifyPinSet(attempt + 1), 1000);
       } else {
@@ -63,9 +61,9 @@ const SetPinClient = () => {
       localStorage.setItem("pin", pin.trim());
       localStorage.setItem("pinStoredAt", now.toString());
 
-      setSuccess("PIN set successfully. Verifying...");
-      setVerifying(true);
-      verifyPinSet();
+       setTimeout(() => {
+          navigate("/clientLogin");
+        }, 1200); // Smooth UX delay
     } catch (err) {
       localStorage.removeItem("accountNumber");
       localStorage.removeItem("pin");
@@ -77,16 +75,16 @@ const SetPinClient = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-6 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-lg font-bold mb-4 text-center">Set Your PIN</h2>
+    <div className="min-h-screen flex items-center justify-center bg-amber-300">
+      <div style={{ backgroundImage: 'url(/login.png)' }} className="bg-white p-6 rounded shadow-xl w-full max-w-sm">
+        <h2 className="text-slate-700 font-bold mb-4 text-center text-xl">Set Your PIN</h2>
 
         <input
           type="text"
           placeholder="Account Number (e.g. c-ab12)"
           value={accountNumber}
           onChange={(e) => setAccountNumber(e.target.value)}
-          className="border p-2 mb-3 w-full rounded"
+          className="border border-gray-300 p-2 mb-3 w-full rounded outline-0 bg-gray-300"
           required
         />
 
@@ -95,7 +93,7 @@ const SetPinClient = () => {
           placeholder="Enter new PIN"
           value={pin}
           onChange={(e) => setPin(e.target.value)}
-          className="border p-2 mb-3 w-full rounded"
+          className="border border-gray-300 p-2 mb-3 w-full rounded outline-0 bg-gray-300 "
           required
           maxLength={4}
         />
@@ -103,11 +101,11 @@ const SetPinClient = () => {
         <button
           onClick={handleSubmit}
           disabled={loading || verifying}
-          className="bg-blue-600 text-white py-2 rounded w-full hover:bg-blue-700"
+          className="bg-blue-600 text-white py-2 rounded w-full hover:bg-blue-700 mb-4"
         >
           {loading ? "Setting PIN..." : verifying ? "Verifying..." : "Set PIN"}
         </button>
-
+<Link className="mt-2" to='/clientLogin'>Click to <span className="hover:underline font-bold p-2 text-white m-2">Login</span></Link>
         {success && <p className="text-green-500 mt-3 text-sm">{success}</p>}
         {error && <p className="text-red-500 mt-3 text-sm">{error}</p>}
       </div>

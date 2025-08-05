@@ -88,7 +88,8 @@ const AdminHomePage = () => {
   };
 
   return (
-    <div className='p-6 bg-white shadow-md rounded-md w-full max-w-md mx-auto'>
+   <div className='bg-slate-100 h-screen p-2'>
+     <div className='p-6 bg-amber-300  shadow-md rounded-md w-full max-w-md mx-auto pt-14 mt-15'>
       <h2 className='text-xl font-bold mb-4 text-center text-gray-700'>💰 Smart Deposit</h2>
 
       {message && (
@@ -99,7 +100,7 @@ const AdminHomePage = () => {
 
       <input
         placeholder='Enter Client ID'
-        className='border p-2 w-full mb-2 rounded'
+        className='border p-2 w-full mb-2 rounded outline-0 bg-white border-gray-300 rounded-lg'
         value={clientId}
         onChange={e => setClientId(e.target.value)}
       />
@@ -111,7 +112,7 @@ const AdminHomePage = () => {
       </button>
 
       {clientDetails && (
-        <div className='mt-4 p-3 border bg-gray-50 rounded'>
+        <div className='mt-4 p-3 border text-slate-800 rounded bg-amber-300 bg-white border-gray-300'>
           <h3 className='font-semibold mb-1'>{clientDetails.name}</h3>
           <p>ID: {clientDetails.clientId}</p>
           <p>Balance: ₵{clientDetails.balance}</p>
@@ -125,7 +126,7 @@ const AdminHomePage = () => {
           <input
             type='number'
             placeholder='Deposit Amount'
-            className='border p-2 w-full mb-2 rounded'
+            className='border p-2 w-full mb-2 rounded border-gray-300 bg-white outline-0 rounded-lg'
             value={depositAmount}
             onChange={e => setDepositAmount(e.target.value)}
           />
@@ -140,14 +141,15 @@ const AdminHomePage = () => {
       )}
 
       <div className='mt-6 flex justify-between'>
-        <Link to='/allTransaction' className='text-blue-700 underline text-sm'>
+        <Link to='/allTransaction' className='text-blue-700 underline text-sm font-bold'>
           View All Transactions
         </Link>
-        <Link to='/withdrawal' className='text-red-700 underline text-sm'>
+        <Link to='/withdrawal' className='text-red-700 underline text-sm font-bold'>
           Withdrawal
         </Link>
       </div>
     </div>
+   </div>
   );
 };
 

@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema({
-   customerId: {
+   clientId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true
   },
-  agentCode: {
+  agentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true
@@ -16,6 +16,16 @@ const transactionSchema = new mongoose.Schema({
     enum: ["deposit", "withdrawal"],
     required: true
   },
+day: {
+  type: Number
+},
+month: {
+  type: Number
+},
+year: {
+  type: Number
+},
+
   amount: {
     type: Number,
     required: true

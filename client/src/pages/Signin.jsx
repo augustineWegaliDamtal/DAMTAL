@@ -38,9 +38,12 @@ useEffect(() => {
 
     const data = await res.json();
     if (!res.ok) {
+      
       dispatch(signinFailure(data.message || 'Login failed'));
       return;
     }
+ localStorage.setItem('token', data.token);
+
 
     dispatch(signinSuccess(data)); // Redirect now handled by useEffect
   } catch (error) {

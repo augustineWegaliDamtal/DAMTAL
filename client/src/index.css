@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+/* AG Grid floating filter input override */
+.ag-floating-filter-input {
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  background-color: #fffbe6;
+  color: #1a1a1a;
+  border: 1px solid #ccc;
+}
+.ag-theme-alpine .ag-center-cols-container .ag-cell.withdrawal-number {
+  color: #ff4444 !important;
+  font-weight: 700;
+}
+
+
+
+

@@ -121,7 +121,7 @@ const ClientDashboard = () => {
           dashboard empowers your financial journey.
         </p>
         <a
-          href="/client/learn"
+          href="/about"
           className="inline-block mt-2 text-sm text-white hover:underline"
         >
           Learn More →

@@ -1,5 +1,21 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { loginSuccess } from "../redux/user/userSlice";
+import BackButton from "../components/BackButton";
+
+// 🔹 Reusable helper for protected requests
+export const apiFetch = (url, options = {}) => {
+  const token = localStorage.getItem("token");
+  return fetch(url, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    }
+  });
+};
 
 const ClientLogin = () => {
   const [accountNumber, setAccountNumber] = useState("");
@@ -7,6 +23,7 @@ const ClientLogin = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -20,26 +37,39 @@ const ClientLogin = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           accountNumber: accountNumber.trim(),
-          pin: pin.trim()
-        })
+          pin: pin.trim(),
+        }),
       });
 
       const data = await res.json();
-console.log("🧠 Response:", data);
+      console.log("🧠 Response:", data);
 
       if (!res.ok || !data.success) {
         throw new Error(data?.message || "Invalid credentials");
       }
 
+      // ✅ Store token and metadata
       const now = Date.now();
       localStorage.setItem("token", data.token);
       localStorage.setItem("accountNumber", accountNumber.trim());
-      localStorage.setItem("pin", pin.trim());
+      localStorage.setItem("pin", pin.trim()); // ⚠ For security, consider removing PIN storage in prod
       localStorage.setItem("pinStoredAt", now.toString());
 
+      // ✅ Update Redux
+      dispatch(
+        loginSuccess({
+          currentUser: {
+            accountNumber: accountNumber.trim(),
+            role: "client",
+          },
+          loginType: "client",
+        })
+      );
+
+      // Redirect after short delay
       setTimeout(() => {
         navigate("/clientHome");
-      }, 1000);
+      }, 800);
     } catch (err) {
       const fallback = err.message || "Login failed";
       if (!fallback.toLowerCase().includes("successful")) {
@@ -51,10 +81,12 @@ console.log("🧠 Response:", data);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-      <form  style={{ backgroundImage: 'url(/bg3.png)' }}
+    <div className="flex flex-col mt-9 bg-gray-200 min-h-screen ">
+    <BackButton/>
+      <form
+        style={{ backgroundImage: "url(/bg3.png)" }}
         onSubmit={handleLogin}
-        className=" bg-cover bg-no-repeat  max-h-screen flex flex-col bg-amber-300 p-6 rounded shadow-xl w-full max-w-sm"
+        className="bg-cover bg-no-repeat max-h-screen mx-auto flex flex-col bg-amber-300 p-6 rounded shadow-xl w-full max-w-sm"
       >
         <h2 className="text-xl font-semibold mb-4 text-center">Client Login</h2>
 

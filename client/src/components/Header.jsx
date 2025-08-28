@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import BackButton from './BackButton';
 
 const Header = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser,loginType } = useSelector((state) => state.user);
   const [tapCount, setTapCount] = useState(0);
   const [showSignin, setShowSignin] = useState(false);
+
 
   const handleSecretTap = () => {
     setTapCount((prev) => {
@@ -34,6 +36,9 @@ const Header = () => {
  <Link to="/about">
        <div className='flex items-center ml-9'><img className='w-10 h-10 slow-bounce' src='Co.png'/></div>
        </Link>
+       {loginType? <Link to='/clientProfile'>Profile</Link>:''}
+       {loginType? <Link to='/clientHome'>home</Link>:''}
+
         {currentUser?.role === 'agent' && (
           <Link to="/agent">
             <li>
@@ -54,7 +59,7 @@ const Header = () => {
           </Link>
         )}
 
-        {currentUser ? (
+        {(currentUser?.role === 'agent' || currentUser?.role === 'admin') ? (
           <Link to="/profile">
             <img
               src={currentUser.avatar}

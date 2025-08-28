@@ -1,0 +1,27 @@
+.about-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 2rem;
+  line-height: 1.6;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.about-header h1 {
+  color:  #006400; /* Try your brand's primary color */
+}
+
+.about-section h2 {
+  margin-top: 1.5rem;
+  color: #2e8b57;
+}
+
+.about-section ul {
+  padding-left: 1.2rem;
+}
+
+.about-contact {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f7f7f7;
+  border-radius: 6px;
+}

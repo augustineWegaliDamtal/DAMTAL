@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { resetError, signinFailure, signinStart, signinSuccess } from '../redux/user/userSlice.js'
 import { Link, useNavigate } from 'react-router-dom'
+import BackButton from '../components/BackButton.jsx'
 
 const Signin = () => {
    const [formData,setFormData] = useState({})
@@ -63,6 +64,7 @@ useEffect(() => {
           <input type='password' className='border-b border-gray-300 p-2 rounded-lg outline-0 text-white' required placeholder='password' name='password' onChange={handleFormData} />
           <button disabled={loading} className='bg-black rounded-sm text-white p-2 hover:bg-gradient-to-tl from-blue-300 to-gray-500'>{loading?'...loading':'Signin'}</button>
           {error && <div className='text-red-500 bg-black'>{error}</div>}
+          
        </form>
        </div>
       </div>

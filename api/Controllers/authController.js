@@ -8,11 +8,13 @@ export const Registerations = async (req, res, next) => {
   const { name, username, email, password, phone, gender, address, role, accountNumber } = req.body;
 
   try {
+    // 🔹 Check duplicate email
     if (email) {
       const existingUser = await User.findOne({ email });
       if (existingUser) return res.status(400).json({ message: 'Email already exists' });
     }
 
+    // 🔹 Check duplicate account number (if provided manually)
     if (accountNumber) {
       const existingAccount = await User.findOne({ accountNumber });
       if (existingAccount) return res.status(400).json({ message: 'Account number already in use' });
@@ -20,14 +22,15 @@ export const Registerations = async (req, res, next) => {
 
     let finalAccountNumber;
     console.log('🧠 Received role:', role);
-console.log('🔐 Authenticated user role:', req.user?.role);
-
+    console.log('🔐 Authenticated user role:', req.user?.role);
 
     if (role === 'admin' || role === 'agent') {
+      // Only admins can assign staff roles
       if (!req.user || req.user.role !== 'admin') {
         return res.status(403).json({ message: 'Only admins can assign roles' });
       }
 
+      // Check duplicate username
       if (username) {
         const existingUsername = await User.findOne({ username });
         if (existingUsername) return res.status(400).json({ message: 'Username already exists' });
@@ -38,23 +41,32 @@ console.log('🔐 Authenticated user role:', req.user?.role);
 
       finalAccountNumber = accountNumber;
     } else {
-      // Random account number generator
+      // 🔹 Sequential padded account number generator for clients
       let attempt = 0;
       do {
-        const letterSeed = Math.floor(Math.random() * 1296);
-        const letters = letterSeed.toString(36).padStart(2, 'a');
-        const digitSeed = Math.floor(Math.random() * 100);
-        const digits = digitSeed.toString().padStart(2, '0');
-        finalAccountNumber = `c-${letters}${digits}`;
+        // Find highest account number in DB (numeric sort)
+        const lastUser = await User.findOne({})
+          .sort({ accountNumber: -1 })
+          .collation({ locale: "en_US", numericOrdering: true });
+
+        let nextNumber = 1;
+        if (lastUser && lastUser.accountNumber && !isNaN(lastUser.accountNumber)) {
+          nextNumber = parseInt(lastUser.accountNumber, 10) + 1;
+        }
+
+        // Always 2+ digits (01, 02...) — grows naturally after 99
+        finalAccountNumber = nextNumber.toString().padStart(2, '0');
 
         const exists = await User.findOne({ accountNumber: finalAccountNumber });
         if (!exists) break;
 
         attempt++;
-        if (attempt > 10) return res.status(500).json({ message: 'Could not generate unique account number' });
+        if (attempt > 10) {
+          return res.status(500).json({ message: 'Could not generate unique account number' });
+        }
       } while (true);
 
-      console.log("✅ Generated account number:", finalAccountNumber);
+      console.log("✅ Generated sequential account number:", finalAccountNumber);
     }
 
     if (!finalAccountNumber) {
@@ -72,7 +84,6 @@ console.log('🔐 Authenticated user role:', req.user?.role);
       role: role || 'client',
       gender,
       agentUsername: req.user.username,
-
       address,
       accountNumber: finalAccountNumber
     });
@@ -81,18 +92,19 @@ console.log('🔐 Authenticated user role:', req.user?.role);
     const savedUser = await User.findById(newUser._id);
 
     res.status(201).json({
-  success: true,
-  message: 'User created',
-  userId: savedUser._id,
-  accountNumber: savedUser.accountNumber
-});
-
+      success: true,
+      message: 'User created',
+      userId: savedUser._id,
+      accountNumber: savedUser.accountNumber
+    });
 
   } catch (error) {
     console.error('Registration error:', error);
     next(error);
   }
 };
+
+
 
 // Staff Signin
 export const Signin = async (req, res, next) => {
@@ -151,43 +163,80 @@ export const checkClientStatus = async (req, res, next) => {
     const { accountNumber } = req.params;
     const client = await User.findOne({ accountNumber });
 
-    if (!client) return res.status(404).json({ message: 'Client not found' });
+    if (!client) {
+      return res.status(404).json({ exists: false, message: "Client not found" });
+    }
 
-    const pinSet = typeof client.pin === 'string' && client.pin.length > 0;
+    const pinSet = typeof client.pin === "string" && client.pin.length > 0;
     console.log("🔍 PIN status for", accountNumber, ":", pinSet);
 
-    res.status(200).json({ pinSet });
+    res.status(200).json({ exists: true, pinSet });
   } catch (error) {
     console.error("PIN status error:", error);
     next(error);
   }
 };
 
+
 // ✅ Set new PIN securely
 export const setPinClient = async (req, res, next) => {
   try {
     const { accountNumber, pin } = req.body;
+
+    // Basic validation
     if (!accountNumber || !pin) {
-      return res.status(400).json({ message: 'Account number and PIN are required' });
+      return res.status(400).json({
+        success: false,
+        message: "Account number and PIN are required",
+      });
     }
 
-    const client = await User.findOne({ accountNumber });
-    if (!client) return res.status(404).json({ message: 'Client not found' });
-
-    if (typeof client.pin === 'string' && client.pin.length > 0) {
-      return res.status(400).json({ message: 'PIN already set' });
+    // Enforce 4-digit numeric PIN
+    if (!/^\d{4}$/.test(String(pin).trim())) {
+      return res.status(400).json({
+        success: false,
+        message: "PIN must be exactly 4 digits",
+      });
     }
 
-    const hashedPin = await bcryptjs.hash(pin, 10);
-    await User.findByIdAndUpdate(client._id, { pin: hashedPin }, { new: true });
+    // If your schema has pin with select: false, you MUST explicitly select it
+    // so the "already set" check actually works.
+    const client = await User.findOne({ accountNumber: accountNumber.trim() }).select("+pin");
+    if (!client) {
+      return res.status(404).json({ success: false, message: "Client not found" });
+    }
+
+    // Prevent re-setting if already set
+    if (typeof client.pin === "string" && client.pin.length > 0) {
+      return res.status(409).json({ success: false, message: "PIN already set" });
+    }
+
+    const hashedPin = await bcryptjs.hash(String(pin).trim(), 10);
+    await User.findByIdAndUpdate(
+      client._id,
+      { $set: { pin: hashedPin } },
+      { new: false }
+    );
 
     console.log("✅ PIN successfully saved for:", accountNumber);
-    res.status(200).json({ message: 'PIN set successfully', pinSet: true });
+
+    // Return a consistent, login-like payload
+    return res.status(200).json({
+      success: true,
+      message: "PIN set successfully",
+      pinSet: true,
+    });
   } catch (error) {
     console.error("PIN setup error:", error);
-    next(error);
+    // Ensure JSON error response for frontend .json() call
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error while setting PIN",
+    });
+    // Or use next(error) if your error middleware always returns JSON
   }
 };
+
 
 // ✅ Client login using PIN
 export const loginClient = async (req, res, next) => {
@@ -215,4 +264,14 @@ export const loginClient = async (req, res, next) => {
     console.error("Client login error:", error);
     next(error);
   }
+};
+
+export const logoutClient = (req, res) => {
+  res
+    .clearCookie('token', {
+      httpOnly: true,
+      sameSite: 'lax'
+    })
+    .status(200)
+    .json({ message: 'Logged out successfully' });
 };

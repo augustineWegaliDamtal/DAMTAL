@@ -113,8 +113,10 @@ const Profile = () => {
   };
 
   return (
-    <div className='bg-slate-100 h-screen p-15 '>
-      <h1 className='text-slate-700 text-center font-bold uppercase'>Profile</h1>
+           <div style={{ backgroundImage: 'url(/bg3.png)' }}
+            className=" bg-cover bg-no-repeat h-screen  bg-amber-300 p-6 rounded shadow-xl w-full mt-8 ">
+
+      <h1 className='text-slate-700 text-center font-bold text-xl  uppercase'>Profile</h1>
       <form onSubmit={handleUpdate} className='flex flex-col mx-auto max-w-sm gap-4'>
         <div className='flex flex-col items-center'>
           <img
@@ -125,14 +127,14 @@ const Profile = () => {
           />
           <input type='file' hidden onChange={(e) => setFile(e.target.files[0])} ref={fileRef} />
         </div>
-        <input type='text' id='username' defaultValue={currentUser.username} onChange={handleFormChange} className='border p-2 rounded-sm border-gray-300 ' placeholder='Username' />
-        <input type='text' id='email' defaultValue={currentUser.email} onChange={handleFormChange} className='border p-2 rounded-sm border-gray-300 ' placeholder='Email' />
-        <input type='text' id='phone' defaultValue={currentUser.phone} onChange={handleFormChange} className='border p-2 rounded-sm border-gray-300 ' placeholder='Phone' />
-        <input type='text' id='password' defaultValue={currentUser.password} onChange={handleFormChange} className='border border-gray-300 p-2 rounded-sm' placeholder='Password' />
+        <input type='text' id='username' defaultValue={currentUser.username} onChange={handleFormChange} className='border p-2 bg-white rounded-sm border-gray-300 ' placeholder='Username' />
+        <input type='text' id='email' defaultValue={currentUser.email} onChange={handleFormChange} className='border bg-white p-2 rounded-sm border-gray-300 ' placeholder='Email' />
+        <input type='text' id='phone' defaultValue={currentUser.phone} onChange={handleFormChange} className='border p-2 bg-white rounded-sm border-gray-300 ' placeholder='Phone' />
+        <input type='text' id='password' defaultValue={currentUser.password} onChange={handleFormChange} className='border bg-white border-gray-300 p-2 rounded-sm' placeholder='Password' />
         <button className='bg-blue-900 text-white p-2 rounded hover:opacity-80'>Update User Credentials</button>
         <div className='flex justify-between'>
-          <button type='button' onClick={handleFormDelete} className='text-red-600 hover:underline'>Delete Account</button>
-          <button type='button' onClick={handleSignOut} className='text-slate-600 hover:underline'>Sign Out</button>
+          <button type='button' onClick={handleFormDelete} className='text-red-600 hover:underline font-bold'>Delete Account</button>
+          <button type='button' onClick={handleSignOut} className='text-slate-600 hover:underline font-bold'>Sign Out</button>
         </div>
       </form>
     </div>

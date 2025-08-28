@@ -16,6 +16,9 @@ import SetPin from './pages/SetPin'
 import ClientCheck from './pages/ClientCheck'
 import AllTransactionsAGGrid from './pages/AllTransactions'
 import WithdrawalsDashboard from './pages/Withdrawals'
+import ClientProfile from './pages/ClientProfile'
+import ClientOnly from './components/ClientOnly'
+
 
 const App = () => {
   return (
@@ -27,9 +30,13 @@ const App = () => {
               <Route path='/signin' element={<Signin/>}/>
               <Route path='/setPin' element={<SetPin/>}/>
               <Route path='/check' element={<ClientCheck/>}/>
-               <Route path='/clientHome' element={<ClientHomePage/>}/>
+               
                 <Route path='/about' element={<About/>}/>
         <Route element={<Private/>}>
+       <Route element={<ClientOnly/>}>
+         <Route path='/clientProfile' element={<ClientProfile/>}/>
+         <Route path='/clientHome' element={<ClientHomePage/>}/>
+       </Route>
     <Route path='/profile' element={<Profile/>}/>
         <Route path='/admin' element={<AdminHomePage/>}/>
         <Route path='/agent' element={<AgentsHomePage/>}/>

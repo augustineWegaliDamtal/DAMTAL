@@ -88,8 +88,10 @@ const AdminHomePage = () => {
   };
 
   return (
-    <div className='p-6 bg-amber-300  shadow-md rounded-md w-full max-w-md mx-auto pt-14 mt-11'>
-      <h2 className='text-xl font-bold mb-4 text-center text-gray-700'>💰 Smart Deposit</h2>
+   <div style={{ backgroundImage: 'url(/bg3.png)' }} className=" bg-cover bg-no-repeat bg-amber-300  min-h-screen  ">
+    <h1>hellow</h1>
+     <div className='p-6 bg-black  shadow-md rounded-md w-full max-w-md mx-auto pt-14 mt-11'>
+      <h2 className='text-xl font-bold mb-4 text-center text-white'>💰 Smart Deposit</h2>
 
       {message && (
         <p className='mb-3 px-3 py-2 rounded text-sm text-gray-700 bg-gray-100 border border-gray-300'>
@@ -148,6 +150,7 @@ const AdminHomePage = () => {
         </Link>
       </div>
     </div>
+   </div>
   );
 };
 

@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom'
 const Landing = () => {
   return (
       <div style={{backgroundImage:'url(/Copilot.png) ',backgroundSize: 'cover',backgroundPosition: 'center', }} 
-      className=' bg-center h-screen sm:bg-contain md:bg-[position:top_30%]  mt-9 pt-15 bg-no-repeat'>
+      className=' bg-center h-screen sm:bg-contain md:bg-[position:top_30%]  mt-9 pt-15 bg-no-repeat  '>
      <div  className='flex justify-between mt-3'>
      <div >
-      <h1 className='text-white font-bold text-150 flex md:text-4xl p-2'> Welcome to Pro-Damtal Susu 
-      mobilization app</h1>
+      <h1 className='text-white font-bold text-150 flex md:text-4xl p-2'> Welcome to </h1>
+      <h1 className='text-6xl text-amber-400 font-extrabold p-2 font-serif '>Pro-Damtal Susu </h1>
+      <h1 className='text-white text-3xl  font-bold p-2 '>mobilization app</h1>
      <h1 className='text-blue-900 font-bold text-100 slow-bounce p-2'> <span className=' bg-neutral-100  border-transparent md:text-xl '>  Feel    free    to explore           </span></h1>
 
      </div>
